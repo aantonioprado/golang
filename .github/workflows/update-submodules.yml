@@ -1,0 +1,53 @@
+name: Update Submodules (Direct)
+
+on:
+  schedule:
+    - cron: "0 8 * * *"  # 08:00 UTC = 05:00 America/Sao_Paulo
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-submodules
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout superproject (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Ensure submodule branches (idempotent)
+        run: |
+          git config -f .gitmodules submodule.guessing-game.branch main
+          git config -f .gitmodules submodule.1brc.branch main
+          git config -f .gitmodules submodule.api-shorten-url.branch main
+          git config -f .gitmodules submodule.gohunter.branch main
+          git config -f .gitmodules submodule.api-movie-search.branch main
+          git config -f .gitmodules submodule.dump-cli.branch main
+          git add .gitmodules || true
+
+      - name: Update submodules to latest remote HEADs
+        run: |
+          git submodule update --init --recursive
+          git submodule update --remote --merge
+
+      - name: Commit & push if changed
+        run: |
+          if ! git diff --quiet; then
+            git add -A
+            git commit -m "chore: bump submodules to latest"
+            git push
+          else
+            echo "No submodule changes."
+          fi
