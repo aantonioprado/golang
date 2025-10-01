@@ -2,7 +2,7 @@ name: Update Submodules (Direct)
 
 on:
   schedule:
-    - cron: "2 * * * *"
+    - cron: "5 * * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -21,6 +21,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+          token: ${{ secrets.SUBMODULES_TOKEN }}
 
       - name: Configure Git
         run: |
@@ -39,6 +40,7 @@ jobs:
 
       - name: Update submodules to latest remote HEADs
         run: |
+          git submodule sync --recursive
           git submodule update --init --recursive
           git submodule update --remote --merge
 
