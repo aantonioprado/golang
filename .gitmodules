@@ -1,0 +1,24 @@
+[submodule "guessing-game"]
+	path = guessing-game
+	url = https://github.com/aantonioprado/rs-go-guessing-game
+	branch = main
+[submodule "1brc"]
+	path = 1brc
+	url = https://github.com/aantonioprado/rs-go-1brc
+	branch = main
+[submodule "api-shorten-url"]
+	path = api-shorten-url
+	url = https://github.com/aantonioprado/rs-go-api-shorten-url
+	branch = main
+[submodule "gohunter"]
+	path = gohunter
+	url = https://github.com/aantonioprado/gohunter
+	branch = main
+[submodule "api-movie-search"]
+	path = api-movie-search
+	url = https://github.com/aantonioprado/rs-go-api-movie-search
+	branch = main
+[submodule "dump-cli"]
+	path = dump-cli
+	url = https://github.com/aantonioprado/dump-cli
+	branch = main
