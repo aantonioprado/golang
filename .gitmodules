@@ -26,3 +26,5 @@
 	path = gobid
 	url = https://github.com/aantonioprado/rs-go-gobid
 	branch = main
+[gobid]
+	branch = main
