@@ -22,3 +22,7 @@
 	path = dump-cli
 	url = https://github.com/aantonioprado/dump-cli
 	branch = main
+[submodule "gobid"]
+	path = gobid
+	url = https://github.com/aantonioprado/rs-go-gobid
+	branch = main

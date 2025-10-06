@@ -12,6 +12,8 @@ Repositorio central que referencia projetos em Go. Cada item abaixo aponta para 
 
 - [rs-go-api-movie-search](https://github.com/aantonioprado/rs-go-api-movie-search): API que consulta a OMDb API para busca de filmes, com rotas, middlewares e respostas JSON
 
+- 🚧 [gobid](https://github.com/aantonioprado/rs-go-gobid): 
+
 - 🚧 [gohunter](https://github.com/aantonioprado/gohunter): Ferramenta em Go para exploração e aprendizado sobre Pentest
 
 - 🚧 [dump-cli](https://github.com/aantonioprado/dump-cli): 
