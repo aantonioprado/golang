@@ -10,7 +10,7 @@ permissions:
 
 concurrency:
   group: update-submodules
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   bump:
@@ -33,7 +33,7 @@ jobs:
           git config -f .gitmodules submodule.1brc.branch main
           git config -f .gitmodules submodule.api-movie-search.branch main
           git config -f .gitmodules submodule.dump-cli.branch main
-          git config -f .gitmodules gobid.branch main
+          git config -f .gitmodules submodule.gobid.branch main
           git config -f .gitmodules submodule.gohunter.branch main
           git config -f .gitmodules submodule.guessing-game.branch main
           git add .gitmodules || true
@@ -46,10 +46,42 @@ jobs:
 
       - name: Commit & push if changed
         run: |
-          if ! git diff --quiet; then
-            git add -A
-            git commit -m "chore: bump submodules to latest"
-            git push
-          else
+          if git diff --quiet; then
             echo "No submodule changes."
+            exit 0
           fi
+
+          subs=$(git config --file .gitmodules --name-only --get-regexp path | sed 's/^submodule\.//;s/\.path$//')
+
+          declare -a lines=()
+          
+          for s in $subs; do
+            path=$(git config -f .gitmodules submodule.$s.path)
+            # Se houver diff no ponteiro do submódulo, coletamos info
+            if ! git diff --quiet -- "$path"; then
+              subject=$(cd "$path" && git log -1 --pretty=%s)
+              sha=$(cd "$path" && git rev-parse --short HEAD)
+              lines+=("$s@$sha: $subject")
+            fi
+          done
+          
+          if [ ${#lines[@]} -eq 0 ]; then
+            echo "Submodule diffs were staged elsewhere; committing generic message."
+            subj="chore: bump submodules to latest"
+            body=""
+          elif [ ${#lines[@]} -eq 1 ]; then
+            subj="chore: ${lines[0]}"
+            body=""
+          else
+            subj="chore: bump submodules to latest"
+            body=$(printf '%s\n' "${lines[@]}")
+          fi
+
+          git add -A
+          if [ -n "$body" ]; then
+            git commit -m "$subj" -m "$body"
+          else
+            git commit -m "$subj"
+          fi
+
+          git push
