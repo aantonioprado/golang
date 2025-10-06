@@ -30,12 +30,12 @@ jobs:
 
       - name: Ensure submodule branches (idempotent)
         run: |
-          git config -f .gitmodules submodule.guessing-game.branch main
           git config -f .gitmodules submodule.1brc.branch main
-          git config -f .gitmodules submodule.api-shorten-url.branch main
-          git config -f .gitmodules submodule.gohunter.branch main
           git config -f .gitmodules submodule.api-movie-search.branch main
           git config -f .gitmodules submodule.dump-cli.branch main
+          git config -f .gitmodules gobid.branch main
+          git config -f .gitmodules submodule.gohunter.branch main
+          git config -f .gitmodules submodule.guessing-game.branch main
           git add .gitmodules || true
 
       - name: Update submodules to latest remote HEADs
